@@ -37,6 +37,7 @@ def test_set_slack_reminder(mock_post):
     }  # noqa
 
     response = set_slack_reminder(date, message)
+    print(response)
     mock_post.assert_called_once()
     assert response["ok"]
     assert "reminder" in response
