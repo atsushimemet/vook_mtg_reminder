@@ -28,7 +28,7 @@ def test_not_calculate_saturdays_2023_jan():
 #     # set_slack_reminder関数のテスト
 #     date = "2023-01-07T09:00:00Z"  # ISOフォーマットの日付
 #     message = "テストリマインダー"
-#     mock_post.return_value.json.return_value = {"ok": True, "reminder": {"id": "Rm123"}}
+#     mock_post.return_value.json.return_value = {"ok": True, "reminder": {"id": "Rm123"}} # noqa
 
 #     response = set_slack_reminder(date, message)
 #     mock_post.assert_called_once()
