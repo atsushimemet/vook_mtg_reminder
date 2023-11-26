@@ -1,6 +1,8 @@
 # import pytest
 from datetime import datetime
-from utils import calculate_saturdays
+from unittest.mock import patch
+
+from utils import calculate_saturdays, set_slack_reminder
 
 
 def test_calculate_saturdays_2023_jan():
@@ -23,14 +25,19 @@ def test_not_calculate_saturdays_2023_jan():
     assert third_saturday != datetime(2023, 1, 22)  # 2023年1月の第三土曜日の一日後
 
 
-# @patch("requests.post")
-# def test_set_slack_reminder(mock_post):
-#     # set_slack_reminder関数のテスト
-#     date = "2023-01-07T09:00:00Z"  # ISOフォーマットの日付
-#     message = "テストリマインダー"
-#     mock_post.return_value.json.return_value = {"ok": True, "reminder": {"id": "Rm123"}} # noqa
+@patch("requests.post")
+def test_set_slack_reminder(mock_post):
+    # set_slack_reminder関数のテスト
+    date = "2023-01-07T09:00:00Z"  # ISOフォーマットの日付
+    message = "テストリマインダー"
+    user_id = "Rm123"
+    mock_post.return_value.json.return_value = {
+        "ok": True,
+        "reminder": {"id": user_id},
+    }  # noqa
 
-#     response = set_slack_reminder(date, message)
-#     mock_post.assert_called_once()
-#     assert response["ok"]
-#     assert "reminder" in response
+    response = set_slack_reminder(date, message)
+    mock_post.assert_called_once()
+    assert response["ok"]
+    assert "reminder" in response
+    assert response["reminder"]["id"] == user_id
